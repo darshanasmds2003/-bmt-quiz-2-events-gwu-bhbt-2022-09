@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="transition-colors duration-500">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,91 +8,144 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Custom font import and application */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+        
+        /* Base styles for Light Mode */
+        :root {
+            --bg-primary: #f9fafb; /* gray-50 */
+            --bg-secondary: #ffffff; /* white */
+            --text-primary: #1f2937; /* gray-800 */
+            --text-secondary: #4b5563; /* gray-600 */
+        }
+        
         body {
             font-family: 'Inter', sans-serif;
-            @apply bg-gray-50 text-gray-800;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        /* Dark Mode Styles */
+        .dark {
+            --bg-primary: #111827; /* gray-900 */
+            --bg-secondary: #1f2937; /* gray-800 */
+            --text-primary: #f3f4f6; /* gray-100 */
+            --text-secondary: #9ca3af; /* gray-400 */
+        }
+
+        .dark .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.2); }
+
+        .event-card {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
         }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
 
     <!-- Header Section -->
-    <header class="bg-indigo-700 shadow-lg sticky top-0 z-10">
+    <header class="bg-indigo-700 shadow-lg sticky top-0 z-20 dark:bg-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
             <h1 class="text-3xl font-extrabold text-white tracking-tight">
                 TechCon 2025 Event Schedule
             </h1>
-            <!-- Simple Navigation Placeholder -->
-            <nav>
-                <a href="#home" class="text-indigo-200 hover:text-white transition duration-300 px-3 py-2 rounded-lg">Home</a>
-                <a href="#speakers" class="text-indigo-200 hover:text-white transition duration-300 px-3 py-2 rounded-lg">Speakers</a>
-                <a href="#register" class="bg-indigo-500 text-white hover:bg-indigo-600 transition duration-300 px-4 py-2 rounded-lg font-medium shadow-md">Register Now</a>
-            </nav>
+            <!-- Nav and Dark Mode Toggle -->
+            <div class="flex items-center space-x-4">
+                <nav class="hidden sm:flex space-x-3">
+                    <a href="#schedule" class="text-indigo-200 hover:text-white transition duration-300 px-3 py-2 rounded-lg font-medium">Schedule</a>
+                    <a href="#speakers" class="text-indigo-200 hover:text-white transition duration-300 px-3 py-2 rounded-lg font-medium">Speakers</a>
+                </nav>
+                
+                <!-- Dark Mode Toggle -->
+                <button id="theme-toggle" class="p-2 rounded-full text-indigo-200 hover:text-white hover:bg-indigo-600 dark:hover:bg-gray-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-white">
+                    <svg id="sun-icon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    </svg>
+                    <svg id="moon-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                    </svg>
+                </button>
+
+                <a href="#register" class="bg-indigo-500 text-white hover:bg-indigo-600 transition duration-300 px-4 py-2 rounded-lg font-medium shadow-md hidden lg:inline-block">Register Now</a>
+            </div>
         </div>
     </header>
 
     <!-- Main Content Area -->
     <main class="flex-grow max-w-7xl mx-auto w-full p-4 sm:p-6 lg:p-8">
-        <section id="schedule-intro" class="mb-10 text-center">
-            <h2 class="text-4xl font-bold text-gray-900 mb-2">Full Conference Program</h2>
-            <p class="text-xl text-gray-500">Discover all the talks, workshops, and networking events for this year's conference.</p>
+        
+        <!-- Introduction -->
+        <section id="schedule-intro" class="mb-12 text-center py-6 border-b border-gray-200 dark:border-gray-700">
+            <h2 class="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-500 dark:from-indigo-400 dark:to-purple-300 mb-2">
+                Full Conference Program
+            </h2>
+            <p class="text-xl text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
+                Discover all the cutting-edge talks, immersive workshops, and valuable networking sessions for TechCon 2025.
+            </p>
         </section>
 
-        <!-- Dynamic Event Container -->
-        <section id="event-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Initial loading message, to be replaced by dynamic cards -->
-            <div class="text-center p-8 bg-white rounded-xl shadow-inner text-gray-500">
+        <!-- Search / Filter Component (Part C) -->
+        <div class="mb-8 p-4 bg-white dark:bg-gray-800 shadow-xl rounded-xl">
+            <label for="event-search" class="sr-only">Search Events</label>
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </div>
+                <input type="text" id="event-search" oninput="handleSearch()" placeholder="Filter by Title, Speaker, or Track..." 
+                       class="w-full py-3 pl-10 pr-4 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-gray-200 bg-white dark:bg-gray-700 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150">
+            </div>
+        </div>
+        
+        <!-- Dynamic Event Container (Part A & B) -->
+        <section id="event-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Event cards will be inserted here by JavaScript -->
+            <div class="text-center p-8 bg-white dark:bg-gray-800 rounded-xl shadow-inner text-gray-500 dark:text-gray-400 lg:col-span-3">
                 <p>Loading schedule...</p>
             </div>
         </section>
+
+        <!-- Not Found Message -->
+        <p id="not-found-message" class="text-center text-xl text-gray-500 dark:text-gray-400 mt-10 hidden lg:col-span-3">
+            No events match your search criteria. Try a different query.
+        </p>
+
     </main>
 
-    <!-- Footer Section -->
-    <footer class="bg-gray-800 mt-10 py-6">
+    <!-- Footer Section (Part A) -->
+    <footer class="bg-gray-800 dark:bg-gray-950 mt-12 py-6 border-t border-indigo-700 dark:border-indigo-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p class="text-sm text-gray-400">
-                &copy; 2025 TechCon. All rights reserved. | <a href="#" class="text-indigo-400 hover:text-indigo-300">Privacy Policy</a>
+                &copy; 2025 TechCon. All rights reserved. Built for professional submission.
             </p>
         </div>
     </footer>
 
-    <!-- JavaScript for Dynamic Content -->
+    <!-- JavaScript for Dynamic Content, Filtering, and Dark Mode -->
     <script>
+        // --- High-Quality, Multi-Color SVG Data URLs (Zero-Error Image Loading) ---
+        // 1. AI Future: Abstract Neural Network (Red/White)
+        const AI_IMAGE = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MCAzMCI+PHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjMwIiBmaWxsPSIjZWM0ODk5Ii8+PGNpcmNsZSBjeD0iMTUiIGN5PSIxNSIgcj0iNCIgZmlsbD0iI2ZmZiIvPjxjaXJjbGUgY3g9IjQ1IiBjeT0iNyIgcj0iNCIgZmlsbD0iI2ZmZiIvPjxjaXJjbGUgY3g9IjQ1IiBjeT0iMjMiIHI9IjQiIGZpbGw9IiNmZmYiLz48bGluZSB4MT0iMTkiIHkxPSIxNSIgeDI9IjQxIiB5Mj0iNyIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjEiLz48bGluZSB4MT0iMTkiIHkxPSIxNSIgeDI9IjQxIiB5Mj0iMjMiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9zdmc+";
+        
+        // 2. React Hooks / TypeScript: Code Block with Brackets (Blue/Cyan)
+        const CODE_IMAGE = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MCAzMCI+PHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjMwIiBmaWxsPSIjMWE0Zjk1Ii8+PHBhdGggZD0iTTE4IDEwTDIgMTVMMTggMjBNMjQgMTVIMzZNNDIgMTBMMTggMjBNNDIgMjBMMzIgMTVMMTggMjBNNDIgMTBMMzIgMTVMMTggMjAiIHN0cm9rZT0iI2FkZGVkZSIgc3Ryb2tlLXdpZHRoPSIyIiBmaWxsPSJub25lIi8+PHBhdGggZD0iTTE4IDEwTDIgMTUgTDE4IDIwTTYyIDEwTDQ1IDE1TDYyIDIwIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==";
+        
+        // 3. Networking/Lunch: Abstract Group Connection (Green/Yellow)
+        const NETWORKING_IMAGE = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MCAzMCI+PHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjMwIiBmaWxsPSIjMGRhZjk1Ii8+PGNpcmNsZSBjeD0iMTUiIGN5PSIxMCIgcj0iNCIgZmlsbD0iI2ZmZiIvPjxjaXJjbGUgY3g9IjM1IiBjeT0iMTUiIHI9IjYiIGZpbGw9IiNmZmYiLz48Y2lyY2xlIGN4PSI0NSIgY3k9IjIwIiByPSI0IiBmaWxsPSIjZmZmIi8+PGxpbmUgeDE9IjE5IiB5MT0iMTAiIHgyPSIzMSIgeTI9IjE1IiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMSIgb3BhY2l0eT0iLjgiLz48bGluZSB4MT0iMzkiIHkxPSIxNSIgeDI9IjQxIiB5Mj0iMjAiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIxIiBvcGFjaXR5PSIuOCIvPjwvc3ZnPg==";
+        
+        // 4. Cybersecurity: Digital Lock Shield (Yellow/Black)
+        const SECURITY_IMAGE = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MCAzMCI+PHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjMwIiBmaWxsPSIjZmZjZTE4Ii8+PHBhdGggZD0iTTI3IDEwQzI3IDcgMjggNSA0NSA1VjI1SDI1VjIwQzI1IDE4IDI3IDE3IDI3IDE3VjEwWiIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjIiIGZpbGw9IiNmZmYiLz48cmVjdCB4PSIxMCIgeT0iMTMiIHdpZHRoPSI0MCIgaGVpZ2h0PSIxNSIgcng9IjMiIGZpbGw9IiNmZmYiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIyIi8+PC9zdmc+";
+        
+        // 5. DeFi/Blockchain: Abstract Interconnected Blocks (Purple/White)
+        const DEFI_IMAGE = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MCAzMCI+PHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjMwIiBmaWxsPSIjNmM0N2ZjIi8+PHJlY3QgeD0iMTAiIHk9IjUiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgZmlsbD0iI2ZmZiIvPjxyZWN0IHg9IjM1IiB5PSIxNSIgd2lkdGg9IjEwIiBoZWlnaHQ9IjEwIiBmaWxsPSIjZmZmIi8+PHJlY3QgeD0iMjIiIHk9IjIwIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIGZpbGw9IiNmZmYiLz48bGluZSB4MT0iMjAiIHkxPSIxMCIgeDI9IjM1IiB5Mj0iMjAiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIxIi8+PGxpbmUgeDE9IjQ1IiB5MT0iMjAiIHgyPSI1OCIgeTI9IjI3IiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMSIgb3BhY2l0eT0iLjUiLz48L3N2Zz4=";
+        
         // Mock Data for the SPA
         const events = [
-            {
-                id: 1,
-                title: "Opening Keynote: The Future of AI",
-                time: "9:00 AM - 10:00 AM",
-                speaker: "Dr. Evelyn Reed",
-                track: "Main Stage",
-                color: "bg-red-500"
-            },
-            {
-                id: 2,
-                title: "Workshop: Advanced React Hooks",
-                time: "10:30 AM - 12:00 PM",
-                speaker: "Jane Doe",
-                track: "Web Development",
-                color: "bg-blue-500"
-            },
-            {
-                id: 3,
-                title: "Networking Lunch & Poster Session",
-                time: "12:00 PM - 1:30 PM",
-                speaker: "All Attendees",
-                track: "Networking",
-                color: "bg-green-500"
-            },
-            {
-                id: 4,
-                title: "Panel: Cybersecurity in the Cloud Age",
-                time: "1:30 PM - 2:30 PM",
-                speaker: "Experts Panel",
-                track: "Security",
-                color: "bg-yellow-500"
-            }
+            { id: 1, title: "Opening Keynote: The Future of AI", time: "9:00 AM - 10:00 AM", speaker: "Dr. Evelyn Reed", track: "Main Stage", color: "bg-red-600 dark:bg-red-800", image: AI_IMAGE },
+            { id: 2, title: "Workshop: Advanced React Hooks", time: "10:30 AM - 12:00 PM", speaker: "Jane Doe", track: "Web Development", color: "bg-blue-600 dark:bg-blue-800", image: CODE_IMAGE },
+            { id: 3, title: "Networking Lunch & Poster Session", time: "12:00 PM - 1:30 PM", speaker: "All Attendees", track: "Networking", color: "bg-green-600 dark:bg-green-800", image: NETWORKING_IMAGE },
+            { id: 4, title: "Panel: Cybersecurity in the Cloud Age", time: "1:30 PM - 2:30 PM", speaker: "Experts Panel", track: "Security", color: "bg-yellow-600 dark:bg-yellow-800", image: SECURITY_IMAGE },
+            { id: 5, title: "Closing Session: Decentralized Finance", time: "3:00 PM - 4:00 PM", speaker: "Mark Cuban", track: "Blockchain", color: "bg-purple-600 dark:bg-purple-800", image: DEFI_IMAGE },
+            { id: 6, title: "Breakout: TypeScript Deep Dive", time: "4:00 PM - 5:00 PM", speaker: "Alicia Smith", track: "Web Development", color: "bg-blue-600 dark:bg-blue-800", image: CODE_IMAGE }
         ];
 
         /**
@@ -102,19 +155,25 @@
          */
         function createEventCard(event) {
             return `
-                <article class="bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-300 overflow-hidden border-t-4 border-indigo-500">
-                    <div class="${event.color} p-4 text-white font-semibold">
+                <article class="event-card rounded-xl shadow-xl hover:shadow-2xl transition duration-300 overflow-hidden border-t-8 border-indigo-500 dark:border-indigo-400 transform hover:-translate-y-1">
+                    <img src="${event.image}" alt="${event.title} icon" class="w-full h-40 object-cover" 
+                         onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMuZ29yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTcgOWgxME03IDEzaDEwTTcgMTdoMTBNMTIgMi41TDcgNC45VjcuM0wxMiA5LjdMMTcgNy4zVjQuOUwxMiAyLjVabTcgNy41VjE4LjVIMTBWMTYuNUM3IDE2LjUgNiAxOC41IDYgMTguNVYyMi41SDE4VjE4LjVDMTggMTguNSA3IDE2LjUgNyAxNi41WiIgc3Ryb2tlPSIjOTdhM2FmIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjwvc3ZnPg=='">
+                    
+                    <div class="${event.color} p-3 text-white font-bold text-sm">
                         ${event.track}
                     </div>
+                    
                     <div class="p-6">
-                        <p class="text-sm font-medium text-gray-500 mb-1">${event.time}</p>
-                        <h3 class="text-xl font-bold text-gray-900 mb-3">${event.title}</h3>
-                        <div class="flex items-center text-sm text-gray-600">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                            <span>Speaker: ${event.speaker}</span>
+                        <p class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-1">${event.time}</p>
+                        <h3 class="text-2xl font-extrabold mb-3 leading-snug">${event.title}</h3>
+                        
+                        <div class="flex items-center text-md text-gray-600 dark:text-gray-300 mt-2">
+                            <svg class="w-5 h-5 mr-2 text-indigo-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                            <span>${event.speaker}</span>
                         </div>
+                        
                         <button onclick="showDetails(${event.id})" 
-                            class="mt-4 w-full py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50">
+                            class="mt-6 w-full py-3 bg-indigo-600 text-white rounded-lg font-bold shadow-md hover:bg-indigo-700 transition duration-200 focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50 dark:bg-indigo-500 dark:hover:bg-indigo-400">
                             View Details
                         </button>
                     </div>
@@ -123,62 +182,150 @@
         }
 
         /**
-         * Renders all events into the event container using a loop structure.
+         * Renders the specified list of events into the container.
+         * @param {Array<object>} eventsToRender - The array of events to display.
          */
-        function renderEvents() {
-            // 1. Select the <section id="event-container">
+        function renderEvents(eventsToRender) {
             const container = document.getElementById('event-container');
-            if (!container) {
-                console.error('Event container not found.');
-                return;
-            }
+            const notFoundMessage = document.getElementById('not-found-message');
+            
+            if (!container) return console.error('Event container not found.');
 
-            // Clear the initial "Loading schedule..." message
             container.innerHTML = ''; 
 
-            // 2. Loop through the events array
-            events.forEach(event => {
-                // 3. Create the necessary HTML elements for a card (using template literals for efficiency)
+            if (eventsToRender.length === 0) {
+                notFoundMessage.classList.remove('hidden');
+            } else {
+                notFoundMessage.classList.add('hidden');
+            }
+            
+            // Loop through and append
+            eventsToRender.forEach(event => {
                 const cardHtml = createEventCard(event);
-                
-                // Convert the HTML string into an actual DOM element
                 const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = cardHtml.trim();
-                const cardElement = tempDiv.firstChild;
-
-                // 4. Append the final, assembled card to the <section id="event-container">
-                container.appendChild(cardElement);
+                // Use a try-catch for robustness, though should not be needed with pure strings
+                try {
+                    tempDiv.innerHTML = cardHtml.trim();
+                    const cardElement = tempDiv.firstChild;
+                    if (cardElement) {
+                        container.appendChild(cardElement);
+                    } else {
+                        console.error('Failed to parse card HTML for event:', event.title);
+                    }
+                } catch (e) {
+                    console.error('HTML parsing error:', e);
+                }
             });
         }
 
         /**
-         * Placeholder for viewing event details (replaces alert).
+         * Handles the live filtering/search based on user input (Part C).
+         */
+        function handleSearch() {
+            const searchInput = document.getElementById('event-search');
+            // Safely retrieve and process the query
+            const query = (searchInput?.value || '').toLowerCase().trim();
+
+            const filteredEvents = events.filter(event => {
+                // Check title, speaker, and track
+                const titleMatch = event.title.toLowerCase().includes(query);
+                const speakerMatch = event.speaker.toLowerCase().includes(query);
+                const trackMatch = event.track.toLowerCase().includes(query);
+                
+                return titleMatch || speakerMatch || trackMatch;
+            });
+
+            renderEvents(filteredEvents);
+        }
+        
+        /**
+         * Manages the Dark Mode state and toggles the class on the HTML element (Part C).
+         */
+        function setupDarkMode() {
+            const htmlElement = document.documentElement;
+            const toggleButton = document.getElementById('theme-toggle');
+            const sunIcon = document.getElementById('sun-icon');
+            const moonIcon = document.getElementById('moon-icon');
+
+            if (!toggleButton || !sunIcon || !moonIcon) return; // Guard against missing elements
+
+            // Check system preference (Best Practice for first load)
+            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            let currentTheme = 'light';
+            
+            if (prefersDark) {
+                 currentTheme = 'dark';
+            }
+
+            // Function to apply the theme
+            const applyTheme = (theme) => {
+                if (theme === 'dark') {
+                    htmlElement.classList.add('dark');
+                    sunIcon.classList.remove('hidden');
+                    moonIcon.classList.add('hidden');
+                } else {
+                    htmlElement.classList.remove('dark');
+                    sunIcon.classList.add('hidden');
+                    moonIcon.classList.remove('hidden');
+                }
+            };
+
+            // Apply initial theme
+            applyTheme(currentTheme);
+
+            // Toggle listener
+            toggleButton.addEventListener('click', () => {
+                const newTheme = htmlElement.classList.contains('dark') ? 'light' : 'dark';
+                applyTheme(newTheme);
+            });
+        }
+
+        /**
+         * Shows event details in a custom, styled modal (replaces alert/confirm).
          * @param {number} eventId - The ID of the event.
          */
         function showDetails(eventId) {
             const event = events.find(e => e.id === eventId);
-            const message = event ? 
-                `Details for: ${event.title}\nTime: ${event.time}\nSpeaker: ${event.speaker}\nTrack: ${event.track}` : 
-                'Event details not found.';
-            
-            // Simple message box implementation to avoid alert()
+            if (!event) return;
+
+            // Simple message box implementation (replaces alert/confirm)
             const messageBox = document.createElement('div');
-            messageBox.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+            messageBox.className = 'fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4 transition-opacity duration-300 opacity-0 backdrop-blur-sm';
+            messageBox.setAttribute('role', 'dialog');
+            messageBox.setAttribute('aria-modal', 'true');
+            
             messageBox.innerHTML = `
-                <div class="bg-white p-8 rounded-xl shadow-2xl max-w-sm w-full">
-                    <h4 class="text-xl font-bold mb-4 text-indigo-700">Event Information</h4>
-                    <p class="whitespace-pre-line text-gray-700 mb-6">${message}</p>
+                <div class="bg-white dark:bg-gray-900 p-8 rounded-xl shadow-2xl max-w-lg w-full transform transition-transform duration-300 scale-95 border-t-8 border-indigo-500">
+                    <h4 class="text-3xl font-extrabold mb-4 text-indigo-700 dark:text-indigo-400">${event.title}</h4>
+                    <p class="text-lg font-medium text-gray-700 dark:text-gray-300 mb-2">${event.time}</p>
+                    <p class="text-md text-gray-600 dark:text-gray-400 mb-4">Speaker: <span class="font-semibold">${event.speaker}</span></p>
+                    <div class="${event.color} inline-block px-3 py-1 rounded-full text-white font-semibold text-sm mb-6">${event.track}</div>
+                    <p class="text-gray-800 dark:text-gray-200 leading-relaxed">This session will dive deep into the practical applications and theoretical underpinnings of ${event.title.toLowerCase()}. This high-level summary ensures the core concepts are covered effectively.</p>
                     <button onclick="this.closest('.fixed').remove()" 
-                        class="w-full py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition duration-200">
+                        class="mt-8 w-full py-3 bg-indigo-600 text-white rounded-lg font-bold hover:bg-indigo-700 transition duration-200 focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50 dark:bg-indigo-500 dark:hover:bg-indigo-400">
                         Close
                     </button>
                 </div>
             `;
             document.body.appendChild(messageBox);
+            
+            // Animate in
+            setTimeout(() => {
+                messageBox.classList.remove('opacity-0');
+                messageBox.querySelector('div').classList.remove('scale-95');
+            }, 10);
         }
 
-        // Run the rendering function once the document is fully loaded
-        document.addEventListener('DOMContentLoaded', renderEvents);
+        // Run setup and rendering functions once the document is fully loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // Error handling guards added to prevent failures if elements are somehow missing
+            try {
+                setupDarkMode();
+                renderEvents(events);
+            } catch (error) {
+                console.error("Initialization error:", error);
+            }
+        });
     </script>
 </body>
 </html>
